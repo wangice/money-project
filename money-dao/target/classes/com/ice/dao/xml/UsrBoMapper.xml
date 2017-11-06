@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.dao.mapper.UsrBoMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.dao.bo.UsrBo" >
+    <id column="usr_id" property="id" jdbcType="INTEGER" />
+    <result column="usr_phone" property="phone" jdbcType="CHAR" />
+    <result column="usr_account" property="account" jdbcType="VARCHAR" />
+    <result column="usr_usr_name" property="usrName" jdbcType="VARCHAR" />
+    <result column="usr_pwd" property="pwd" jdbcType="VARCHAR" />
+    <result column="usr_role" property="role" jdbcType="INTEGER" />
+    <result column="usr_identity" property="identity" jdbcType="CHAR" />
+    <result column="usr_identity_status" property="identityStatus" jdbcType="INTEGER" />
+    <result column="usr_email" property="email" jdbcType="VARCHAR" />
+    <result column="usr_pic_big" property="picBig" jdbcType="VARCHAR" />
+    <result column="usr_pic_small" property="picSmall" jdbcType="VARCHAR" />
+    <result column="usr_create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    usr.id as usr_id, usr.phone as usr_phone, usr.account as usr_account, usr.usr_name as usr_usr_name, 
+    usr.pwd as usr_pwd, usr.role as usr_role, usr.identity as usr_identity, usr.identity_status as usr_identity_status, 
+    usr.email as usr_email, usr.pic_big as usr_pic_big, usr.pic_small as usr_pic_small, 
+    usr.create_time as usr_create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_usr usr
+    where usr.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from db_usr
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ice.dao.bo.UsrBo" >
+    insert into db_usr (id, phone, account, 
+      usr_name, pwd, role, 
+      identity, identity_status, email, 
+      pic_big, pic_small, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=CHAR}, #{account,jdbcType=VARCHAR}, 
+      #{usrName,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, 
+      #{identity,jdbcType=CHAR}, #{identityStatus,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
+      #{picBig,jdbcType=VARCHAR}, #{picSmall,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ice.dao.bo.UsrBo" >
+    insert into db_usr
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="usrName != null" >
+        usr_name,
+      </if>
+      <if test="pwd != null" >
+        pwd,
+      </if>
+      <if test="role != null" >
+        role,
+      </if>
+      <if test="identity != null" >
+        identity,
+      </if>
+      <if test="identityStatus != null" >
+        identity_status,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="picBig != null" >
+        pic_big,
+      </if>
+      <if test="picSmall != null" >
+        pic_small,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=CHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="usrName != null" >
+        #{usrName,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        #{role,jdbcType=INTEGER},
+      </if>
+      <if test="identity != null" >
+        #{identity,jdbcType=CHAR},
+      </if>
+      <if test="identityStatus != null" >
+        #{identityStatus,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="picBig != null" >
+        #{picBig,jdbcType=VARCHAR},
+      </if>
+      <if test="picSmall != null" >
+        #{picSmall,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ice.dao.bo.UsrBo" >
+    update db_usr
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=CHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="usrName != null" >
+        usr_name = #{usrName,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="identity != null" >
+        identity = #{identity,jdbcType=CHAR},
+      </if>
+      <if test="identityStatus != null" >
+        identity_status = #{identityStatus,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="picBig != null" >
+        pic_big = #{picBig,jdbcType=VARCHAR},
+      </if>
+      <if test="picSmall != null" >
+        pic_small = #{picSmall,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ice.dao.bo.UsrBo" >
+    update db_usr
+    set phone = #{phone,jdbcType=CHAR},
+      account = #{account,jdbcType=VARCHAR},
+      usr_name = #{usrName,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      role = #{role,jdbcType=INTEGER},
+      identity = #{identity,jdbcType=CHAR},
+      identity_status = #{identityStatus,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      pic_big = #{picBig,jdbcType=VARCHAR},
+      pic_small = #{picSmall,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
