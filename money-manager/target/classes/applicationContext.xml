@@ -24,8 +24,7 @@
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
 
-
-
 	<import resource="config/spring-dao.xml" />
+	<import resource="config/spring-mvc.xml" />
 
 </beans>

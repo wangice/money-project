@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.dao.mapper.TempFileBoMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.dao.bo.TempFileBo" >
+    <id column="tmp_id" property="id" jdbcType="INTEGER" />
+    <result column="tmp_path" property="path" jdbcType="VARCHAR" />
+    <result column="tmp_w" property="w" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ice.dao.bo.TempFileBo" extends="BaseResultMap" >
+    <result column="tmp_dat" property="dat" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tmp.id as tmp_id, tmp.path as tmp_path, tmp.w as tmp_w
+  </sql>
+  <sql id="Blob_Column_List" >
+    tmp.dat as tmp_dat
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from db_temp_file tmp
+    where tmp.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from db_temp_file
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ice.dao.bo.TempFileBo" >
+    insert into db_temp_file (id, path, w, dat
+      )
+    values (#{id,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{w,jdbcType=BIT}, #{dat,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ice.dao.bo.TempFileBo" >
+    insert into db_temp_file
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="w != null" >
+        w,
+      </if>
+      <if test="dat != null" >
+        dat,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="w != null" >
+        #{w,jdbcType=BIT},
+      </if>
+      <if test="dat != null" >
+        #{dat,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ice.dao.bo.TempFileBo" >
+    update db_temp_file
+    <set >
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="w != null" >
+        w = #{w,jdbcType=BIT},
+      </if>
+      <if test="dat != null" >
+        dat = #{dat,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ice.dao.bo.TempFileBo" >
+    update db_temp_file
+    set path = #{path,jdbcType=VARCHAR},
+      w = #{w,jdbcType=BIT},
+      dat = #{dat,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ice.dao.bo.TempFileBo" >
+    update db_temp_file
+    set path = #{path,jdbcType=VARCHAR},
+      w = #{w,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

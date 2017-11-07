@@ -47,11 +47,30 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 		</dependency>
+		<!-- json -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
+		<!-- web -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
 		<!-- 本地jar -->
 		<dependency>
 			<groupId>com.ice</groupId>
-			<artifactId>money-dao</artifactId>
+			<artifactId>money-service</artifactId>
 			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>libmisc</groupId>
+			<artifactId>libmisc</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>

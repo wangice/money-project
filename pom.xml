@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ice</groupId>
 	<artifactId>money-project</artifactId>
@@ -13,13 +12,18 @@
 		<logback.version>1.1.7</logback.version>
 		<logback.ext.spring.version>0.1.4</logback.ext.spring.version>
 		<jcl-over-slf4j.version>1.7.20</jcl-over-slf4j.version>
-		<druid.version>1.0.20</druid.version>
+		<druid.version>1.1.4</druid.version>
 		<mysql.version>5.1.24</mysql.version>
 		<mybatis.version>3.4.1</mybatis.version>
 		<mybatis.generator.version>1.3.2</mybatis.generator.version>
 		<mybatis-spring.version>1.3.0</mybatis-spring.version>
 		<junit.version>4.12</junit.version>
 		<cglib.version>3.2.4</cglib.version>
+		<fastjson.version>1.2.30</fastjson.version>
+		<commons-collections.version>3.2.2</commons-collections.version>
+		<commons-lang.version>2.6</commons-lang.version>
+		<commons-fileupload.version>1.3.2</commons-fileupload.version>
+		<servlet-api.version>3.0.1</servlet-api.version>
 	</properties>
 
 	<dependencyManagement>
@@ -184,7 +188,36 @@
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>${commons-collections.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons-lang.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>${commons-fileupload.version}</version>
+			</dependency>
 			<!-- 工具 end -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
+			</dependency>
+			<!-- web -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${servlet-api.version}</version>
+				<scope>provided</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -216,6 +249,20 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<modules>
 		<module>ice-dao</module>
