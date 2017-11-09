@@ -1,5 +1,7 @@
 package com.ice.service;
 
+import java.util.List;
+
 import com.ice.dao.bo.TempFileBo;
 
 public interface TempFileService
@@ -11,5 +13,10 @@ public interface TempFileService
 	int updateTempFileBo(TempFileBo file);
 
 	/** 修改文件是否写入完成. */
-	public int updateTempFile(boolean w);
+	public int updateTempFileByPath(String path, boolean w);
+
+	/** 查询所有写入成功集合. */
+	public List<TempFileBo> queryTempFilesByW(boolean w);
+
+	public int delteTempFile(TempFileBo file);
 }

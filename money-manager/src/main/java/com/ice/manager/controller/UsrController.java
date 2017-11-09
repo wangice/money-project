@@ -1,4 +1,4 @@
-package com.ice.manager;
+package com.ice.manager.controller;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -41,7 +41,6 @@ public class UsrController
 	@RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
 	public String uploadImg(HttpServletRequest request) throws Exception
 	{
-		System.out.println("进入");
 		String thumbnail = request.getParameter("thumbnail");/** 是否略缩图. */
 		long startTime = System.currentTimeMillis();
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
@@ -53,16 +52,17 @@ public class UsrController
 			return "失败";
 		while (iterator.hasNext())
 		{
-			System.out.println("文件名：" + iterator.next().toString());
-			String name = iterator.next().toString();
+			MultipartFile file = multiRequest.getFile(iterator.next().toString());
+			if (file == null)
+				return "失败";
+			String name = file.getOriginalFilename();
+			System.out.println("文件名1:" + file.getOriginalFilename());
 			int index = name.lastIndexOf(".");
 			if (index < 0 || index > name.length() - 2)
 				return "失败";
 			String suffix = name.substring(index, name.length());/* 文件后缀名. */
 			if (!".jpg".equals(suffix) && !".png".equals(suffix))
 				return "不支持";
-			MultipartFile file = multiRequest.getFile(name);
-			System.out.println("文件名1:" + file.getOriginalFilename());
 			if (file.isEmpty())
 				return "失败";
 			byte[] by = Net.readAll(file.getInputStream());
@@ -78,7 +78,7 @@ public class UsrController
 			img.setDat(by);
 			int success = tempFileService.save(img);
 			if (success > 0)/* 文件保存成功. */
-				tempFileService.updateTempFile(true);
+				tempFileService.updateTempFileByPath(path, true);
 			/** -------------------------------- */
 			/**                                  */
 			/** 小图. */
@@ -96,7 +96,7 @@ public class UsrController
 				img.setDat(by);
 				success = tempFileService.save(img);
 				if (success > 0)/* 文件保存成功. */
-					tempFileService.updateTempFile(true);
+					tempFileService.updateTempFileByPath(path, true);
 			}
 		}
 		long endTime = System.currentTimeMillis();

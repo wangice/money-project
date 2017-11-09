@@ -265,8 +265,8 @@
 	</build>
 
 	<modules>
-		<module>ice-dao</module>
-		<module>ice-service</module>
-		<module>ice-manager</module>
+		<module>money-dao</module>
+		<module>money-service</module>
+		<module>money-manager</module>
 	</modules>
 </project>

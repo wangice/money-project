@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ice.dao.mapper.ext.TempFileBoExtMapper" >
-  <resultMap id="BaseResultMap" type="com.ice.dao.bo.TempFileBo" >
-    <id column="tmp_id" property="id" jdbcType="INTEGER" />
-    <result column="tmp_path" property="path" jdbcType="VARCHAR" />
-    <result column="tmp_w" property="w" jdbcType="BIT" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.ice.dao.bo.TempFileBo" extends="BaseResultMap" >
-    <result column="tmp_dat" property="dat" jdbcType="LONGVARBINARY" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    tmp.id as tmp_id, tmp.path as tmp_path, tmp.w as tmp_w
-  </sql>
-  <sql id="Blob_Column_List" >
-    tmp.dat as tmp_dat
-  </sql>
-  
+<mapper namespace="com.ice.dao.mapper.ext.TempFileBoExtMapper">
+	<resultMap id="BaseResultMap" type="com.ice.dao.bo.TempFileBo">
+		<id column="tmp_id" property="id" jdbcType="INTEGER" />
+		<result column="tmp_path" property="path" jdbcType="VARCHAR" />
+		<result column="tmp_w" property="w" jdbcType="BIT" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.ice.dao.bo.TempFileBo" extends="BaseResultMap">
+		<result column="tmp_dat" property="dat" jdbcType="LONGVARBINARY" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		tmp.id as tmp_id, tmp.path as tmp_path, tmp.w as tmp_w
+	</sql>
+	<sql id="Blob_Column_List">
+		tmp.dat as tmp_dat
+	</sql>
+
+	<update id="updateByPath" parameterType="com.ice.dao.bo.TempFileBo">
+		update db_temp_file
+		<set>
+			<if test="w != null">
+				w = #{w},
+			</if>
+		</set>
+		where path = #{path,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectTempFileByW" parameterType="com.ice.dao.bo.TempFileBo" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from db_temp_file tmp
+		where tmp.w = #{w,jdbcType=BIT}
+	</select>
 </mapper>

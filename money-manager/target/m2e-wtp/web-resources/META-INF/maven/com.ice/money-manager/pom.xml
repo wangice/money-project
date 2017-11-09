@@ -8,13 +8,12 @@
 	</parent>
 	<artifactId>money-manager</artifactId>
 	<packaging>war</packaging>
-	<name>ice-manager Maven Webapp</name>
+	<name>money-manager Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<!-- spring start -->
 		<dependency>
@@ -74,6 +73,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>ice-manager</finalName>
+		<finalName>money-manager</finalName>
 	</build>
 </project>
