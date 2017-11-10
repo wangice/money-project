@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<action>
+	<msgs class="com.ice.manager.controller.UsrController">
+		<msg method="uploadImg" />
+	</msgs>
+</action>
