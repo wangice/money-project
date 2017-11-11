@@ -17,4 +17,7 @@ public class Cfg
 
 	/** 是否开启定时任务. */
 	public static final boolean cfg_quartz_job = false;
+
+	/** 系统时间戳, 每Cfg.libtsc_quartz频率更新, (主要用于避免重复调用System.currentTimeMillis()). */
+	public static long clock = System.currentTimeMillis();
 }

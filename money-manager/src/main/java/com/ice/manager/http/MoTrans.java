@@ -6,7 +6,18 @@ public abstract class MoTrans
 	public String token;
 	/** 用户存根. */
 	public UsrStub stub = null;
-
 	/** 响应. */
 	public Rsp ret = null;
+
+	/** 设置用户存根. */
+	public void setStub(UsrStub stub)
+	{
+		this.stub = stub;
+	}
+
+	/** 获取字符串参数. */
+	public abstract String getParStr(String par);
+
+	/** 获取整形参数. */
+	public abstract int getParInt0(String par);
 }
