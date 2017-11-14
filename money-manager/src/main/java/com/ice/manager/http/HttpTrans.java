@@ -62,6 +62,26 @@ public class HttpTrans extends MoTrans
 		return this.flush();
 	}
 
+	/** 不记录日志返回值. */
+	public DeferredResult<String> endNoLog(RspErr err)
+	{
+
+		Rsp rsp = new Rsp();
+		rsp.err = err.getNumber();
+		rsp.desc = err.toString();
+		rsp.dat = null;
+		String r = Misc.obj2json(rsp);
+		if (this.req.jsonp)
+		{
+			StringBuilder strb = new StringBuilder(this.req.callback);
+			strb.append("(").append(r).append(");");
+			this.def.setResult(strb.toString());
+		} else
+			this.def.setResult(r);
+		return this.def;
+	}
+
+	/** 立即返回信息. */
 	public DeferredResult<String> flush()
 	{
 		String r = Misc.obj2json(rsp);

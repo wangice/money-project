@@ -20,6 +20,11 @@ public class MsgCfg
 {
 	Logger logger = LoggerFactory.getLogger("MsgCfg");
 
+	/** action在登录后方可操作. */
+	public static final int ACTION_OPTION_LOGIN = 1 << 0;
+	/** action操作记入用户日志. */
+	public static final int ACTION_OPTION_LOG = 1 << 1;
+
 	public static final HashMap<String, CallBackStub> cbsws = new HashMap<>();
 
 	/** 初始化配置文件. */
@@ -57,7 +62,11 @@ public class MsgCfg
 				for (Element msg : msgs)
 				{
 					Method mth = Misc.findMethodByName(cls, msg.attributeValue("method"));
-					arr.add(new CallBackStub(mth, cls));
+					boolean login = !"false".equals(msg.attributeValue("login"));
+					int bitset = 0x00000000;
+					if (login)
+						bitset |= MsgCfg.ACTION_OPTION_LOGIN;
+					arr.add(new CallBackStub(mth, cls, bitset));
 				}
 			}
 			return arr;
@@ -90,11 +99,14 @@ public class MsgCfg
 		public Method mth;
 		/** 类名. */
 		public Class<?> cls;
+		/** 可选项. */
+		public int option;
 
-		public CallBackStub(Method mth, Class<?> cls)
+		public CallBackStub(Method mth, Class<?> cls, int option)
 		{
 			this.mth = mth;
 			this.cls = cls;
+			this.option = option;
 		}
 	}
 }

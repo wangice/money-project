@@ -30,6 +30,7 @@
 			<param-name>forceEncoding</param-name>
 			<param-value>true</param-value>
 		</init-param>
+		<async-supported>true</async-supported>  
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
@@ -72,6 +73,7 @@
 			<param-name>cors.preflight.maxage</param-name>
 			<param-value>10</param-value>
 		</init-param>
+		<async-supported>true</async-supported>  
 	</filter>
 	<filter-mapping>
 		<filter-name>CorsFilter</filter-name>

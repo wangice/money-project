@@ -1,5 +1,7 @@
 package com.ice.manager.http;
 
+import com.ice.manager.http.Rsp.RspErr;
+
 public abstract class MoTrans
 {
 	/** 鉴权成功后的token值. */
@@ -20,4 +22,5 @@ public abstract class MoTrans
 
 	/** 获取整形参数. */
 	public abstract int getParInt0(String par);
+
 }

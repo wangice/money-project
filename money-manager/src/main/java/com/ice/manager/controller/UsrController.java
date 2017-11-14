@@ -11,63 +11,104 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.ice.dao.bo.TempFileBo;
+import com.ice.manager.http.HttpTrans;
+import com.ice.manager.http.Rsp.RspErr;
 import com.ice.service.TempFileService;
 import com.ice.service.UsrService;
 
+import misc.Crypto;
 import misc.Dateu;
 import misc.Misc;
 import misc.Net;
 
 @Controller
-@RequestMapping("/usr")
 public class UsrController
 {
+	Logger log = LoggerFactory.getLogger("UsrController");
+
 	@Resource
 	public UsrService usrService;
 
 	@Resource
 	public TempFileService tempFileService;
 
-	@ResponseBody
-	@RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
-	public String uploadImg(HttpServletRequest request) throws Exception
+	/** 登录. */
+	public void login(HttpTrans trans, String sign, String salt, String action) throws Exception
+	{
+		if (!Crypto.sha1StrLowerCase((sign + salt + action).getBytes()).equals(sign))/* sign不匹配. */
+		{
+			if (log.isDebugEnabled())
+				log.debug("sign error");
+			trans.end(RspErr.ERR_SIGN);
+			return;
+		}
+
+	}
+
+	/** 上传文件. */
+	public void uploadImg(HttpServletRequest request, HttpTrans trans) throws Exception
 	{
 		String thumbnail = request.getParameter("thumbnail");/** 是否略缩图. */
 		long startTime = System.currentTimeMillis();
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
 		if (!resolver.isMultipart(request))
-			return "失败";
+		{
+			if (log.isDebugEnabled())
+				log.debug("it is not multipart");
+			trans.end(RspErr.ERR_FAIL, "it is not multipart");
+			return;
+		}
 		MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
 		Iterator<String> iterator = multiRequest.getFileNames();
 		if (!iterator.hasNext())
-			return "失败";
+		{
+			if (log.isDebugEnabled())
+				log.debug("it is not file");
+			trans.end(RspErr.ERR_FAIL, "it is not file");
+			return;
+		}
 		while (iterator.hasNext())
 		{
 			MultipartFile file = multiRequest.getFile(iterator.next().toString());
 			if (file == null)
-				return "失败";
+			{
+				if (log.isDebugEnabled())
+					log.debug("it is not file name");
+				trans.end(RspErr.ERR_FAIL, "it is not file name");
+				return;
+			}
 			String name = file.getOriginalFilename();
-			System.out.println("文件名1:" + file.getOriginalFilename());
 			int index = name.lastIndexOf(".");
 			if (index < 0 || index > name.length() - 2)
-				return "失败";
+			{
+				trans.end(RspErr.ERR_FAIL, "file name length is error");
+				return;
+			}
 			String suffix = name.substring(index, name.length());/* 文件后缀名. */
 			if (!".jpg".equals(suffix) && !".png".equals(suffix))
-				return "不支持";
+			{
+				trans.end(RspErr.ERR_UNSUPPORTED, "only supported jpg and png");
+				return;
+			}
 			if (file.isEmpty())
-				return "失败";
+			{
+				trans.end(RspErr.ERR_FAIL, "file not is empty");
+				return;
+			}
 			byte[] by = Net.readAll(file.getInputStream());
 			if (by == null)
-				return "失败";
+			{
+				trans.end(RspErr.ERR_FAIL, "file not is empty");
+				return;
+			}
 			Date now = new Date();
 			int r = Misc.randInt();
 			String fileName = Misc.printf2Str("%s%08X%s", Dateu.parseDateyyyyMMddHHmmss2(now), r, suffix);
@@ -76,7 +117,12 @@ public class UsrController
 			img.setPath(path);
 			img.setW(false);
 			img.setDat(by);
+			if (tempFileService == null)
+			{
+				System.out.println("为空");
+			}
 			int success = tempFileService.save(img);
+			System.out.println(success);
 			if (success > 0)/* 文件保存成功. */
 				tempFileService.updateTempFileByPath(path, true);
 			/** -------------------------------- */
@@ -100,8 +146,9 @@ public class UsrController
 			}
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("运行时间：" + (endTime - startTime) + "ms");
-		return "成功";
+		if (log.isDebugEnabled())
+			log.debug("upload 运行时间: {} ms", (endTime - startTime));
+		trans.end(RspErr.ERR_NONE);
 	}
 
 	/** 生成略缩图. */

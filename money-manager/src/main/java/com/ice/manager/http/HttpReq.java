@@ -44,6 +44,11 @@ public class HttpReq
 		}
 	}
 
+	public HttpServletRequest getRequest()
+	{
+		return this.request;
+	}
+
 	/** 获得HTTP-URI中的字符串参数. */
 	public final String getParStr(String par)
 	{
