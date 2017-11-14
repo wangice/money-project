@@ -1,7 +1,5 @@
 package com.ice.manager.http;
 
-import com.ice.manager.http.Rsp.RspErr;
-
 public abstract class MoTrans
 {
 	/** 鉴权成功后的token值. */
